@@ -1,0 +1,9 @@
+{
+  "name": "shared-shopping-list-server",
+  "version": "0.0.1",
+  "description": "Server side for the app Shared Shopping List",
+  "main": "index.js",
+  "repository": "https://github.com/pgomesdev/shared-shopping-list-server.git",
+  "author": "pgomesdev <pgomesdev@gmail.com>",
+  "license": "MIT"
+}
