@@ -2,8 +2,11 @@
   "name": "shared-shopping-list-server",
   "version": "0.0.1",
   "description": "Server side for the app Shared Shopping List",
-  "main": "index.js",
+  "main": "./src/index.js",
   "repository": "https://github.com/pgomesdev/shared-shopping-list-server.git",
   "author": "pgomesdev <pgomesdev@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "graphql-yoga": "^1.17.4"
+  }
 }
