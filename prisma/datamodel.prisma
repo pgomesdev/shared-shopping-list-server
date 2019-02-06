@@ -1,0 +1,14 @@
+type ShoppingList {
+  id: ID! @unique
+  createdAt: DateTime!
+  name: String!
+  items: [Item!]!
+  store: [String!]!
+}
+
+type Item {
+  id: ID! @unique
+  name: String!
+  price: Float
+  quantity: Int
+}
