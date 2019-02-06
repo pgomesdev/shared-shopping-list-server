@@ -1,0 +1,15 @@
+type Query {
+  info: String!
+  listShoppingList: [ShoppingList!]!
+}
+
+type ShoppingList {
+  name: String!
+  items: [Item!]!
+}
+
+type Item {
+  name: String!
+  price: Float
+  quantity: Int
+}
