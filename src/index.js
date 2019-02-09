@@ -1,6 +1,8 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { prisma } = require('./generated/prisma-client');
 
+console.log(process.env['PRISMA_ENDPOINT'])
+
 const resolvers = {
   Query: {
     info: () => `This is the API of Shared Shopping List`,
