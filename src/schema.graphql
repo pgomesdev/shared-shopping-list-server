@@ -1,6 +1,6 @@
 type Query {
   info: String!
-  listShoppingList: [ShoppingList!]!
+  listShoppingLists: [ShoppingList!]!
 }
 
 type Mutation {
