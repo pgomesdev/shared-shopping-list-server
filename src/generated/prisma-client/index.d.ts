@@ -14,7 +14,6 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
-  item: (where?: ItemWhereInput) => Promise<boolean>;
   shoppingList: (where?: ShoppingListWhereInput) => Promise<boolean>;
 }
 
@@ -37,25 +36,6 @@ export interface Prisma {
    * Queries
    */
 
-  item: (where: ItemWhereUniqueInput) => ItemPromise;
-  items: (args?: {
-    where?: ItemWhereInput;
-    orderBy?: ItemOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<Item>;
-  itemsConnection: (args?: {
-    where?: ItemWhereInput;
-    orderBy?: ItemOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => ItemConnectionPromise;
   shoppingList: (where: ShoppingListWhereUniqueInput) => ShoppingListPromise;
   shoppingLists: (args?: {
     where?: ShoppingListWhereInput;
@@ -81,22 +61,6 @@ export interface Prisma {
    * Mutations
    */
 
-  createItem: (data: ItemCreateInput) => ItemPromise;
-  updateItem: (args: {
-    data: ItemUpdateInput;
-    where: ItemWhereUniqueInput;
-  }) => ItemPromise;
-  updateManyItems: (args: {
-    data: ItemUpdateManyMutationInput;
-    where?: ItemWhereInput;
-  }) => BatchPayloadPromise;
-  upsertItem: (args: {
-    where: ItemWhereUniqueInput;
-    create: ItemCreateInput;
-    update: ItemUpdateInput;
-  }) => ItemPromise;
-  deleteItem: (where: ItemWhereUniqueInput) => ItemPromise;
-  deleteManyItems: (where?: ItemWhereInput) => BatchPayloadPromise;
   createShoppingList: (data: ShoppingListCreateInput) => ShoppingListPromise;
   updateShoppingList: (args: {
     data: ShoppingListUpdateInput;
@@ -126,9 +90,6 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  item: (
-    where?: ItemSubscriptionWhereInput
-  ) => ItemSubscriptionPayloadSubscription;
   shoppingList: (
     where?: ShoppingListSubscriptionWhereInput
   ) => ShoppingListSubscriptionPayloadSubscription;
@@ -142,20 +103,6 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ItemOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "price_ASC"
-  | "price_DESC"
-  | "quantity_ASC"
-  | "quantity_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
 export type ShoppingListOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -168,161 +115,35 @@ export type ShoppingListOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface ItemUpdateInput {
-  name?: String;
-  price?: Float;
-  quantity?: Int;
-}
-
-export type ItemWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface ItemUpdateDataInput {
-  name?: String;
-  price?: Float;
-  quantity?: Int;
-}
-
-export interface ShoppingListCreateInput {
-  name: String;
-  items?: ItemCreateManyInput;
-  store?: ShoppingListCreatestoreInput;
-}
-
-export interface ItemUpdateWithWhereUniqueNestedInput {
-  where: ItemWhereUniqueInput;
-  data: ItemUpdateDataInput;
-}
-
-export interface ItemSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ItemWhereInput;
-  AND?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput;
-  OR?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput;
-  NOT?: ItemSubscriptionWhereInput[] | ItemSubscriptionWhereInput;
-}
-
-export interface ItemUpdateManyInput {
-  create?: ItemCreateInput[] | ItemCreateInput;
-  update?:
-    | ItemUpdateWithWhereUniqueNestedInput[]
-    | ItemUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | ItemUpsertWithWhereUniqueNestedInput[]
-    | ItemUpsertWithWhereUniqueNestedInput;
-  delete?: ItemWhereUniqueInput[] | ItemWhereUniqueInput;
-  connect?: ItemWhereUniqueInput[] | ItemWhereUniqueInput;
-  set?: ItemWhereUniqueInput[] | ItemWhereUniqueInput;
-  disconnect?: ItemWhereUniqueInput[] | ItemWhereUniqueInput;
-  deleteMany?: ItemScalarWhereInput[] | ItemScalarWhereInput;
-  updateMany?:
-    | ItemUpdateManyWithWhereNestedInput[]
-    | ItemUpdateManyWithWhereNestedInput;
-}
-
 export interface ShoppingListUpdatestoreInput {
   set?: String[] | String;
 }
 
-export interface ShoppingListUpdateInput {
-  name?: String;
-  items?: ItemUpdateManyInput;
-  store?: ShoppingListUpdatestoreInput;
-}
-
-export interface ItemUpdateManyDataInput {
-  name?: String;
-  price?: Float;
-  quantity?: Int;
+export interface ShoppingListCreateInput {
+  name: String;
+  items?: ShoppingListCreateitemsInput;
+  store?: ShoppingListCreatestoreInput;
 }
 
 export type ShoppingListWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface ItemUpsertWithWhereUniqueNestedInput {
-  where: ItemWhereUniqueInput;
-  update: ItemUpdateDataInput;
-  create: ItemCreateInput;
-}
-
-export interface ItemCreateInput {
-  name: String;
-  price?: Float;
-  quantity?: Int;
-}
-
-export interface ShoppingListUpdateManyMutationInput {
-  name?: String;
-  store?: ShoppingListUpdatestoreInput;
-}
-
-export interface ItemWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  price?: Float;
-  price_not?: Float;
-  price_in?: Float[] | Float;
-  price_not_in?: Float[] | Float;
-  price_lt?: Float;
-  price_lte?: Float;
-  price_gt?: Float;
-  price_gte?: Float;
-  quantity?: Int;
-  quantity_not?: Int;
-  quantity_in?: Int[] | Int;
-  quantity_not_in?: Int[] | Int;
-  quantity_lt?: Int;
-  quantity_lte?: Int;
-  quantity_gt?: Int;
-  quantity_gte?: Int;
-  AND?: ItemWhereInput[] | ItemWhereInput;
-  OR?: ItemWhereInput[] | ItemWhereInput;
-  NOT?: ItemWhereInput[] | ItemWhereInput;
-}
-
-export interface ItemCreateManyInput {
-  create?: ItemCreateInput[] | ItemCreateInput;
-  connect?: ItemWhereUniqueInput[] | ItemWhereUniqueInput;
-}
-
-export interface ItemUpdateManyMutationInput {
-  name?: String;
-  price?: Float;
-  quantity?: Int;
+export interface ShoppingListCreateitemsInput {
+  set?: String[] | String;
 }
 
 export interface ShoppingListCreatestoreInput {
+  set?: String[] | String;
+}
+
+export interface ShoppingListUpdateInput {
+  name?: String;
+  items?: ShoppingListUpdateitemsInput;
+  store?: ShoppingListUpdatestoreInput;
+}
+
+export interface ShoppingListUpdateitemsInput {
   set?: String[] | String;
 }
 
@@ -341,6 +162,12 @@ export interface ShoppingListSubscriptionWhereInput {
   NOT?:
     | ShoppingListSubscriptionWhereInput[]
     | ShoppingListSubscriptionWhereInput;
+}
+
+export interface ShoppingListUpdateManyMutationInput {
+  name?: String;
+  items?: ShoppingListUpdateitemsInput;
+  store?: ShoppingListUpdatestoreInput;
 }
 
 export interface ShoppingListWhereInput {
@@ -380,187 +207,13 @@ export interface ShoppingListWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  items_every?: ItemWhereInput;
-  items_some?: ItemWhereInput;
-  items_none?: ItemWhereInput;
   AND?: ShoppingListWhereInput[] | ShoppingListWhereInput;
   OR?: ShoppingListWhereInput[] | ShoppingListWhereInput;
   NOT?: ShoppingListWhereInput[] | ShoppingListWhereInput;
 }
 
-export interface ItemScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  price?: Float;
-  price_not?: Float;
-  price_in?: Float[] | Float;
-  price_not_in?: Float[] | Float;
-  price_lt?: Float;
-  price_lte?: Float;
-  price_gt?: Float;
-  price_gte?: Float;
-  quantity?: Int;
-  quantity_not?: Int;
-  quantity_in?: Int[] | Int;
-  quantity_not_in?: Int[] | Int;
-  quantity_lt?: Int;
-  quantity_lte?: Int;
-  quantity_gt?: Int;
-  quantity_gte?: Int;
-  AND?: ItemScalarWhereInput[] | ItemScalarWhereInput;
-  OR?: ItemScalarWhereInput[] | ItemScalarWhereInput;
-  NOT?: ItemScalarWhereInput[] | ItemScalarWhereInput;
-}
-
-export interface ItemUpdateManyWithWhereNestedInput {
-  where: ItemScalarWhereInput;
-  data: ItemUpdateManyDataInput;
-}
-
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface Item {
-  id: ID_Output;
-  name: String;
-  price?: Float;
-  quantity?: Int;
-}
-
-export interface ItemPromise extends Promise<Item>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  price: () => Promise<Float>;
-  quantity: () => Promise<Int>;
-}
-
-export interface ItemSubscription
-  extends Promise<AsyncIterator<Item>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  price: () => Promise<AsyncIterator<Float>>;
-  quantity: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ItemPreviousValues {
-  id: ID_Output;
-  name: String;
-  price?: Float;
-  quantity?: Int;
-}
-
-export interface ItemPreviousValuesPromise
-  extends Promise<ItemPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  price: () => Promise<Float>;
-  quantity: () => Promise<Int>;
-}
-
-export interface ItemPreviousValuesSubscription
-  extends Promise<AsyncIterator<ItemPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  price: () => Promise<AsyncIterator<Float>>;
-  quantity: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ShoppingListPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  name: String;
-  store: String[];
-}
-
-export interface ShoppingListPreviousValuesPromise
-  extends Promise<ShoppingListPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  store: () => Promise<String[]>;
-}
-
-export interface ShoppingListPreviousValuesSubscription
-  extends Promise<AsyncIterator<ShoppingListPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  store: () => Promise<AsyncIterator<String[]>>;
-}
-
-export interface ShoppingList {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  name: String;
-  store: String[];
-}
-
-export interface ShoppingListPromise
-  extends Promise<ShoppingList>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  items: <T = FragmentableArray<Item>>(args?: {
-    where?: ItemWhereInput;
-    orderBy?: ItemOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  store: () => Promise<String[]>;
-}
-
-export interface ShoppingListSubscription
-  extends Promise<AsyncIterator<ShoppingList>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  items: <T = Promise<AsyncIterator<ItemSubscription>>>(args?: {
-    where?: ItemWhereInput;
-    orderBy?: ItemOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  store: () => Promise<AsyncIterator<String[]>>;
 }
 
 export interface BatchPayload {
@@ -595,25 +248,53 @@ export interface AggregateShoppingListSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ItemConnection {
-  pageInfo: PageInfo;
-  edges: ItemEdge[];
+export interface ShoppingList {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  name: String;
+  items: String[];
+  store: String[];
 }
 
-export interface ItemConnectionPromise
-  extends Promise<ItemConnection>,
+export interface ShoppingListPromise
+  extends Promise<ShoppingList>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  items: () => Promise<String[]>;
+  store: () => Promise<String[]>;
+}
+
+export interface ShoppingListSubscription
+  extends Promise<AsyncIterator<ShoppingList>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  items: () => Promise<AsyncIterator<String[]>>;
+  store: () => Promise<AsyncIterator<String[]>>;
+}
+
+export interface ShoppingListConnection {
+  pageInfo: PageInfo;
+  edges: ShoppingListEdge[];
+}
+
+export interface ShoppingListConnectionPromise
+  extends Promise<ShoppingListConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ItemEdge>>() => T;
-  aggregate: <T = AggregateItemPromise>() => T;
+  edges: <T = FragmentableArray<ShoppingListEdge>>() => T;
+  aggregate: <T = AggregateShoppingListPromise>() => T;
 }
 
-export interface ItemConnectionSubscription
-  extends Promise<AsyncIterator<ItemConnection>>,
+export interface ShoppingListConnectionSubscription
+  extends Promise<AsyncIterator<ShoppingListConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ItemEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateItemSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ShoppingListEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateShoppingListSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -637,58 +318,6 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ItemEdge {
-  node: Item;
-  cursor: String;
-}
-
-export interface ItemEdgePromise extends Promise<ItemEdge>, Fragmentable {
-  node: <T = ItemPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ItemEdgeSubscription
-  extends Promise<AsyncIterator<ItemEdge>>,
-    Fragmentable {
-  node: <T = ItemSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateItem {
-  count: Int;
-}
-
-export interface AggregateItemPromise
-  extends Promise<AggregateItem>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateItemSubscription
-  extends Promise<AsyncIterator<AggregateItem>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ShoppingListEdge {
-  node: ShoppingList;
-  cursor: String;
-}
-
-export interface ShoppingListEdgePromise
-  extends Promise<ShoppingListEdge>,
-    Fragmentable {
-  node: <T = ShoppingListPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ShoppingListEdgeSubscription
-  extends Promise<AsyncIterator<ShoppingListEdge>>,
-    Fragmentable {
-  node: <T = ShoppingListSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ShoppingListSubscriptionPayload {
@@ -716,78 +345,52 @@ export interface ShoppingListSubscriptionPayloadSubscription
   previousValues: <T = ShoppingListPreviousValuesSubscription>() => T;
 }
 
-export interface ItemSubscriptionPayload {
-  mutation: MutationType;
-  node: Item;
-  updatedFields: String[];
-  previousValues: ItemPreviousValues;
+export interface ShoppingListEdge {
+  node: ShoppingList;
+  cursor: String;
 }
 
-export interface ItemSubscriptionPayloadPromise
-  extends Promise<ItemSubscriptionPayload>,
+export interface ShoppingListEdgePromise
+  extends Promise<ShoppingListEdge>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ItemPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ItemPreviousValuesPromise>() => T;
+  node: <T = ShoppingListPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface ItemSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ItemSubscriptionPayload>>,
+export interface ShoppingListEdgeSubscription
+  extends Promise<AsyncIterator<ShoppingListEdge>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ItemSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ItemPreviousValuesSubscription>() => T;
+  node: <T = ShoppingListSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ShoppingListConnection {
-  pageInfo: PageInfo;
-  edges: ShoppingListEdge[];
+export interface ShoppingListPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  name: String;
+  items: String[];
+  store: String[];
 }
 
-export interface ShoppingListConnectionPromise
-  extends Promise<ShoppingListConnection>,
+export interface ShoppingListPreviousValuesPromise
+  extends Promise<ShoppingListPreviousValues>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ShoppingListEdge>>() => T;
-  aggregate: <T = AggregateShoppingListPromise>() => T;
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  items: () => Promise<String[]>;
+  store: () => Promise<String[]>;
 }
 
-export interface ShoppingListConnectionSubscription
-  extends Promise<AsyncIterator<ShoppingListConnection>>,
+export interface ShoppingListPreviousValuesSubscription
+  extends Promise<AsyncIterator<ShoppingListPreviousValues>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ShoppingListEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateShoppingListSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  items: () => Promise<AsyncIterator<String[]>>;
+  store: () => Promise<AsyncIterator<String[]>>;
 }
-
-export type Long = string;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number;
-
-/*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
-*/
-export type Float = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
-DateTime scalar input type, allowing Date
-*/
-export type DateTimeInput = Date | string;
-
-/*
-DateTime scalar output type, which is always a string
-*/
-export type DateTimeOutput = string;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
@@ -800,15 +403,33 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 export type ID_Input = string | number;
 export type ID_Output = string;
 
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number;
+
+/*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
+
+export type Long = string;
+
 /**
  * Model Metadata
  */
 
 export const models: Model[] = [
-  {
-    name: "Item",
-    embedded: false
-  },
   {
     name: "ShoppingList",
     embedded: false

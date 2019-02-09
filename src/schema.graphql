@@ -1,33 +1,16 @@
 type Query {
   info: String!
   listShoppingList: [ShoppingList!]!
-  shoppingList(id: ID!): ShoppingList!
 }
 
 type Mutation {
   createShoppingList(
     name: String!
   ): ShoppingList!
-  addStoreToShoppingList(
-    shoppingListId: ID!,
-    name: String!
-  ): ShoppingList!
-  addItemToShoppingList(
-    shoppingListId: ID!,
-    name: String!,
-    price: Float,
-    quantity: Int
-  ): ShoppingList!
 }
 
 type ShoppingList {
   name: String!
-  items: [Item!]!
+  items: [String!]!
   store: [String!]!
-}
-
-type Item {
-  name: String!
-  price: Float
-  quantity: Int
 }
