@@ -1,7 +1,8 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { prisma } = require('./generated/prisma-client');
+require('dotenv').config();
 
-console.log(process.env['PRISMA_ENDPOINT'])
+console.log(process.env.PRISMA_ENDPOINT)
 
 const resolvers = {
   Query: {
