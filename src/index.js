@@ -1,8 +1,7 @@
-const { GraphQLServer } = require('graphql-yoga');
-const { prisma } = require('./generated/prisma-client');
 require('dotenv').config();
 
-console.log(process.env.PRISMA_ENDPOINT)
+const { GraphQLServer } = require('graphql-yoga');
+const { prisma } = require('./generated/prisma-client');
 
 const resolvers = {
   Query: {
@@ -15,8 +14,12 @@ const resolvers = {
     createShoppingList: (root, { name }, context) => {
       return context.prisma.createShoppingList({
         name,
-        items: [],
-        store: [],
+        items: {
+          set: [],
+        },
+        store: {
+          set: [],
+        },
       })
     },
   },
