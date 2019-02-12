@@ -12,6 +12,9 @@ type Mutation {
     id: ID!
     name: String!
   ): ShoppingList!
+  deleteShoppingList(
+    id: ID!
+  ): ShoppingList!
 }
 
 type ShoppingList {

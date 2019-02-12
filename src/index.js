@@ -40,6 +40,13 @@ const resolvers = {
 
       return context.prisma.updateShoppingList({ data, where })
     },
+    deleteShoppingList: (_, { id }, context) => {
+      const where = {
+        id,
+      }
+
+      return context.prisma.deleteShoppingList(where)
+    }
   },
 };
 
