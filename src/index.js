@@ -17,7 +17,7 @@ const resolvers = {
   },
   Mutation: {
     createShoppingList: (_, { name }, context) => {
-      return context.prisma.createShoppingList({
+      const data = {
         name,
         items: {
           set: [],
@@ -25,7 +25,9 @@ const resolvers = {
         store: {
           set: [],
         },
-      })
+      }
+
+      return context.prisma.createShoppingList(data)
     },
     updateShoppingList: (_, { id, name }, context) => {
       const data = {
