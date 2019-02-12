@@ -6,12 +6,17 @@ const { prisma } = require('./generated/prisma-client');
 const resolvers = {
   Query: {
     info: () => `This is the API of Shared Shopping List`,
-    listShoppingLists: (root, args, context, info) => {
+    listShoppingLists: (_, args, context, info) => {
       return context.prisma.shoppingLists();
+    },
+    shoppingList: (_, { id }, context) => {
+      return context.prisma.shoppingList({
+        id,
+      })
     },
   },
   Mutation: {
-    createShoppingList: (root, { name }, context) => {
+    createShoppingList: (_, { name }, context) => {
       return context.prisma.createShoppingList({
         name,
         items: {
@@ -21,6 +26,17 @@ const resolvers = {
           set: [],
         },
       })
+    },
+    updateShoppingList: (_, { id, name }, context) => {
+      const data = {
+        name,
+      }
+
+      const where = {
+        id,
+      }
+
+      return context.prisma.updateShoppingList({ data, where })
     },
   },
 };

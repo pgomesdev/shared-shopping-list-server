@@ -1,10 +1,15 @@
 type Query {
   info: String!
   listShoppingLists: [ShoppingList!]!
+  shoppingList(id: ID!): ShoppingList!
 }
 
 type Mutation {
   createShoppingList(
+    name: String!
+  ): ShoppingList!
+  updateShoppingList(
+    id: ID!
     name: String!
   ): ShoppingList!
 }
