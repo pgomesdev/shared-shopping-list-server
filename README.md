@@ -1,6 +1,8 @@
 Shared Shopping List Server
 ==========
 
+![](https://img.shields.io/david/pgomesdev/shared-shopping-list-server.svg)
+
 This project is the server side for the Shared Shopping List app I'm developing.
 It's base on Node.js and GraphQL, using graphql-yoga.
 
