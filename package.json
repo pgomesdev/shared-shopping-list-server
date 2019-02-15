@@ -1,17 +1,20 @@
 {
   "name": "shared-shopping-list-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Server side for the app Shared Shopping List",
   "main": "./src/index.js",
   "repository": "https://github.com/pgomesdev/shared-shopping-list-server.git",
   "author": "pgomesdev <pgomesdev@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "nodemon -e js, graphql -x node --inspect src/index.js"
+  },
   "dependencies": {
     "dotenv": "^6.2.0",
     "graphql-yoga": "^1.17.4",
     "prisma-client-lib": "^1.26.4"
   },
-  "scripts": {
-    "start": "node ./src/index.js"
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }
