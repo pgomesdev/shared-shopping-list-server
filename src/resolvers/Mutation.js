@@ -1,16 +1,8 @@
 const Mutation = {
-  createShoppingList: (_, { name }, context) => {
-    const data = {
+  createShoppingList: (_, { name, items }, context, info) => {
+    return context.prisma.createShoppingList({
       name,
-      items: {
-        set: [],
-      },
-      store: {
-        set: [],
-      },
-    }
-
-    return context.prisma.createShoppingList(data)
+    }, info)
   },
   updateShoppingList: (_, { id, name }, context) => {
     const data = {

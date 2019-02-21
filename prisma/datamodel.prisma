@@ -1,7 +1,14 @@
 type ShoppingList {
   id: ID! @unique
   createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
-  items: [String!]!
-  store: [String!]!
+  items: [Item!]
+}
+
+type Item {
+  id: ID! @unique
+  name: String!
+  quantity: Float
+  price: [Float]
 }
