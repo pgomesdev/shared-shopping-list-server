@@ -3,12 +3,22 @@ type ShoppingList {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  items: [Item!]
+  items: [Item!] @default(value: [])
 }
 
 type Item {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
   quantity: Float
-  price: [Float]
+  priceInfo: [PriceInfo]
+  shoppingList: ShoppingList!
+}
+
+type PriceInfo {
+  id: ID! @unique
+  price: Float
+  store: String
+  item: Item!
 }

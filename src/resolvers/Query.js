@@ -1,12 +1,12 @@
 const Query = {
   info: () => `This is the API of Shared Shopping List`,
   listShoppingLists: (_, args, context, info) => {
-    return context.prisma.shoppingLists();
+    return context.prisma.shoppingLists({}, info);
   },
-  shoppingList: (_, { id }, context) => {
+  shoppingList: async (_, { id }, context, info) => {
     return context.prisma.shoppingList({
       id,
-    })
+    }, info)
   },
 };
 

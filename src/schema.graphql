@@ -1,5 +1,4 @@
 # types
-
 type ShoppingList {
   id: ID!
   name: String!
@@ -10,19 +9,35 @@ type Item {
   id: ID!
   name: String!
   quantity: Float
-  price: [Float]
+  priceInfo: [PriceInfo]
+  shoppingList: ShoppingList!
+}
+
+type PriceInfo {
+  id: ID!
+  price: Float
+  store: String
+  item: Item!
 }
 
 # inputs
-
 input ItemInput {
   name: String!
   quantity: Float
-  price: [Float]
+  priceInfo: [PriceInfoInput]
+  shoppingListId: ID!
+}
+
+input ItemWhereInput {
+  id: ID!
+}
+
+input PriceInfoInput {
+  price: Float!
+  store: String!
 }
 
 # operations
-
 type Query {
   info: String!
   listShoppingLists: [ShoppingList!]!
@@ -30,14 +45,10 @@ type Query {
 }
 
 type Mutation {
-  createShoppingList(
-    name: String!
-  ): ShoppingList!
-  updateShoppingList(
-    id: ID!
-    name: String!
-  ): ShoppingList!
-  deleteShoppingList(
-    id: ID!
-  ): ShoppingList!
+  createShoppingList(name: String!): ShoppingList!
+  updateShoppingList(id: ID!, name: String!): ShoppingList!
+  deleteShoppingList(id: ID!): ShoppingList!
+  createItem(data: ItemInput): Item!
+  updateItem(data: ItemInput!, where: ItemWhereInput!): Item!
+  deleteItem(where: ItemWhereInput!): Item!
 }
