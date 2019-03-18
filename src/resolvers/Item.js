@@ -8,8 +8,6 @@ const Item = {
       },
     }, info);
 
-    console.log(shoppingList)
-
     return shoppingList[0];
   },
 };
