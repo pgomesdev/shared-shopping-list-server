@@ -1,13 +1,4 @@
 const Item = {
-  priceInfo: (parent, args, context, info) => {
-    return context.prisma.priceInfoes({
-      where: {
-        item: {
-          id: parent.id,
-        },
-      },
-    }, info)
-  },
   shoppingList: async (parent, args, context, info) => {
     const shoppingList = await context.prisma.shoppingLists({
       where: {

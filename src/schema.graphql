@@ -9,32 +9,20 @@ type Item {
   id: ID!
   name: String!
   quantity: Float
-  priceInfo: [PriceInfo]
-  shoppingList: ShoppingList!
-}
-
-type PriceInfo {
-  id: ID!
   price: Float
-  store: String
-  item: Item!
+  shoppingList: ShoppingList!
 }
 
 # inputs
 input ItemInput {
   name: String!
   quantity: Float
-  priceInfo: [PriceInfoInput]
+  price: Float
   shoppingListId: ID!
 }
 
 input ItemWhereInput {
   id: ID!
-}
-
-input PriceInfoInput {
-  price: Float!
-  store: String!
 }
 
 # operations

@@ -23,13 +23,10 @@ const Mutation = {
     return context.prisma.deleteShoppingList(where, info)
   },
   createItem: (_, { data }, context, info) => {
-    console.log(data)
     return context.prisma.createItem({
       name: data.name,
       quantity: data.quantity,
-      priceInfo: {
-        create: data.priceInfo,
-      },
+      price: data.price,
       shoppingList: {
         connect: {
           id: data.shoppingListId,
@@ -37,9 +34,11 @@ const Mutation = {
       },
     }, info)
   },
-  updateItem: (_, { id, name }, context, info) => {
+  updateItem: (_, { id, name, quantity, price }, context, info) => {
     const data = {
       name,
+      quantity,
+      price,
     }
 
     const where = {

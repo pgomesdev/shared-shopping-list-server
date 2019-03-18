@@ -7,10 +7,6 @@ module.exports = {
   count: Int!
 }
 
-type AggregatePriceInfo {
-  count: Int!
-}
-
 type AggregateShoppingList {
   count: Int!
 }
@@ -27,7 +23,7 @@ type Item {
   updatedAt: DateTime!
   name: String!
   quantity: Float
-  priceInfo(where: PriceInfoWhereInput, orderBy: PriceInfoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PriceInfo!]
+  price: Float
   shoppingList: ShoppingList!
 }
 
@@ -40,7 +36,7 @@ type ItemConnection {
 input ItemCreateInput {
   name: String!
   quantity: Float
-  priceInfo: PriceInfoCreateManyWithoutItemInput
+  price: Float
   shoppingList: ShoppingListCreateOneWithoutItemsInput!
 }
 
@@ -49,21 +45,10 @@ input ItemCreateManyWithoutShoppingListInput {
   connect: [ItemWhereUniqueInput!]
 }
 
-input ItemCreateOneWithoutPriceInfoInput {
-  create: ItemCreateWithoutPriceInfoInput
-  connect: ItemWhereUniqueInput
-}
-
-input ItemCreateWithoutPriceInfoInput {
-  name: String!
-  quantity: Float
-  shoppingList: ShoppingListCreateOneWithoutItemsInput!
-}
-
 input ItemCreateWithoutShoppingListInput {
   name: String!
   quantity: Float
-  priceInfo: PriceInfoCreateManyWithoutItemInput
+  price: Float
 }
 
 type ItemEdge {
@@ -82,6 +67,8 @@ enum ItemOrderByInput {
   name_DESC
   quantity_ASC
   quantity_DESC
+  price_ASC
+  price_DESC
 }
 
 type ItemPreviousValues {
@@ -90,6 +77,7 @@ type ItemPreviousValues {
   updatedAt: DateTime!
   name: String!
   quantity: Float
+  price: Float
 }
 
 input ItemScalarWhereInput {
@@ -145,6 +133,14 @@ input ItemScalarWhereInput {
   quantity_lte: Float
   quantity_gt: Float
   quantity_gte: Float
+  price: Float
+  price_not: Float
+  price_in: [Float!]
+  price_not_in: [Float!]
+  price_lt: Float
+  price_lte: Float
+  price_gt: Float
+  price_gte: Float
   AND: [ItemScalarWhereInput!]
   OR: [ItemScalarWhereInput!]
   NOT: [ItemScalarWhereInput!]
@@ -171,18 +167,20 @@ input ItemSubscriptionWhereInput {
 input ItemUpdateInput {
   name: String
   quantity: Float
-  priceInfo: PriceInfoUpdateManyWithoutItemInput
+  price: Float
   shoppingList: ShoppingListUpdateOneRequiredWithoutItemsInput
 }
 
 input ItemUpdateManyDataInput {
   name: String
   quantity: Float
+  price: Float
 }
 
 input ItemUpdateManyMutationInput {
   name: String
   quantity: Float
+  price: Float
 }
 
 input ItemUpdateManyWithoutShoppingListInput {
@@ -202,33 +200,15 @@ input ItemUpdateManyWithWhereNestedInput {
   data: ItemUpdateManyDataInput!
 }
 
-input ItemUpdateOneRequiredWithoutPriceInfoInput {
-  create: ItemCreateWithoutPriceInfoInput
-  update: ItemUpdateWithoutPriceInfoDataInput
-  upsert: ItemUpsertWithoutPriceInfoInput
-  connect: ItemWhereUniqueInput
-}
-
-input ItemUpdateWithoutPriceInfoDataInput {
-  name: String
-  quantity: Float
-  shoppingList: ShoppingListUpdateOneRequiredWithoutItemsInput
-}
-
 input ItemUpdateWithoutShoppingListDataInput {
   name: String
   quantity: Float
-  priceInfo: PriceInfoUpdateManyWithoutItemInput
+  price: Float
 }
 
 input ItemUpdateWithWhereUniqueWithoutShoppingListInput {
   where: ItemWhereUniqueInput!
   data: ItemUpdateWithoutShoppingListDataInput!
-}
-
-input ItemUpsertWithoutPriceInfoInput {
-  update: ItemUpdateWithoutPriceInfoDataInput!
-  create: ItemCreateWithoutPriceInfoInput!
 }
 
 input ItemUpsertWithWhereUniqueWithoutShoppingListInput {
@@ -290,9 +270,14 @@ input ItemWhereInput {
   quantity_lte: Float
   quantity_gt: Float
   quantity_gte: Float
-  priceInfo_every: PriceInfoWhereInput
-  priceInfo_some: PriceInfoWhereInput
-  priceInfo_none: PriceInfoWhereInput
+  price: Float
+  price_not: Float
+  price_in: [Float!]
+  price_not_in: [Float!]
+  price_lt: Float
+  price_lte: Float
+  price_gt: Float
+  price_gte: Float
   shoppingList: ShoppingListWhereInput
   AND: [ItemWhereInput!]
   OR: [ItemWhereInput!]
@@ -312,12 +297,6 @@ type Mutation {
   upsertItem(where: ItemWhereUniqueInput!, create: ItemCreateInput!, update: ItemUpdateInput!): Item!
   deleteItem(where: ItemWhereUniqueInput!): Item
   deleteManyItems(where: ItemWhereInput): BatchPayload!
-  createPriceInfo(data: PriceInfoCreateInput!): PriceInfo!
-  updatePriceInfo(data: PriceInfoUpdateInput!, where: PriceInfoWhereUniqueInput!): PriceInfo
-  updateManyPriceInfoes(data: PriceInfoUpdateManyMutationInput!, where: PriceInfoWhereInput): BatchPayload!
-  upsertPriceInfo(where: PriceInfoWhereUniqueInput!, create: PriceInfoCreateInput!, update: PriceInfoUpdateInput!): PriceInfo!
-  deletePriceInfo(where: PriceInfoWhereUniqueInput!): PriceInfo
-  deleteManyPriceInfoes(where: PriceInfoWhereInput): BatchPayload!
   createShoppingList(data: ShoppingListCreateInput!): ShoppingList!
   updateShoppingList(data: ShoppingListUpdateInput!, where: ShoppingListWhereUniqueInput!): ShoppingList
   updateManyShoppingLists(data: ShoppingListUpdateManyMutationInput!, where: ShoppingListWhereInput): BatchPayload!
@@ -343,222 +322,10 @@ type PageInfo {
   endCursor: String
 }
 
-type PriceInfo {
-  id: ID!
-  price: Float
-  store: String
-  item: Item!
-}
-
-type PriceInfoConnection {
-  pageInfo: PageInfo!
-  edges: [PriceInfoEdge]!
-  aggregate: AggregatePriceInfo!
-}
-
-input PriceInfoCreateInput {
-  price: Float
-  store: String
-  item: ItemCreateOneWithoutPriceInfoInput!
-}
-
-input PriceInfoCreateManyWithoutItemInput {
-  create: [PriceInfoCreateWithoutItemInput!]
-  connect: [PriceInfoWhereUniqueInput!]
-}
-
-input PriceInfoCreateWithoutItemInput {
-  price: Float
-  store: String
-}
-
-type PriceInfoEdge {
-  node: PriceInfo!
-  cursor: String!
-}
-
-enum PriceInfoOrderByInput {
-  id_ASC
-  id_DESC
-  price_ASC
-  price_DESC
-  store_ASC
-  store_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type PriceInfoPreviousValues {
-  id: ID!
-  price: Float
-  store: String
-}
-
-input PriceInfoScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  price: Float
-  price_not: Float
-  price_in: [Float!]
-  price_not_in: [Float!]
-  price_lt: Float
-  price_lte: Float
-  price_gt: Float
-  price_gte: Float
-  store: String
-  store_not: String
-  store_in: [String!]
-  store_not_in: [String!]
-  store_lt: String
-  store_lte: String
-  store_gt: String
-  store_gte: String
-  store_contains: String
-  store_not_contains: String
-  store_starts_with: String
-  store_not_starts_with: String
-  store_ends_with: String
-  store_not_ends_with: String
-  AND: [PriceInfoScalarWhereInput!]
-  OR: [PriceInfoScalarWhereInput!]
-  NOT: [PriceInfoScalarWhereInput!]
-}
-
-type PriceInfoSubscriptionPayload {
-  mutation: MutationType!
-  node: PriceInfo
-  updatedFields: [String!]
-  previousValues: PriceInfoPreviousValues
-}
-
-input PriceInfoSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: PriceInfoWhereInput
-  AND: [PriceInfoSubscriptionWhereInput!]
-  OR: [PriceInfoSubscriptionWhereInput!]
-  NOT: [PriceInfoSubscriptionWhereInput!]
-}
-
-input PriceInfoUpdateInput {
-  price: Float
-  store: String
-  item: ItemUpdateOneRequiredWithoutPriceInfoInput
-}
-
-input PriceInfoUpdateManyDataInput {
-  price: Float
-  store: String
-}
-
-input PriceInfoUpdateManyMutationInput {
-  price: Float
-  store: String
-}
-
-input PriceInfoUpdateManyWithoutItemInput {
-  create: [PriceInfoCreateWithoutItemInput!]
-  delete: [PriceInfoWhereUniqueInput!]
-  connect: [PriceInfoWhereUniqueInput!]
-  set: [PriceInfoWhereUniqueInput!]
-  disconnect: [PriceInfoWhereUniqueInput!]
-  update: [PriceInfoUpdateWithWhereUniqueWithoutItemInput!]
-  upsert: [PriceInfoUpsertWithWhereUniqueWithoutItemInput!]
-  deleteMany: [PriceInfoScalarWhereInput!]
-  updateMany: [PriceInfoUpdateManyWithWhereNestedInput!]
-}
-
-input PriceInfoUpdateManyWithWhereNestedInput {
-  where: PriceInfoScalarWhereInput!
-  data: PriceInfoUpdateManyDataInput!
-}
-
-input PriceInfoUpdateWithoutItemDataInput {
-  price: Float
-  store: String
-}
-
-input PriceInfoUpdateWithWhereUniqueWithoutItemInput {
-  where: PriceInfoWhereUniqueInput!
-  data: PriceInfoUpdateWithoutItemDataInput!
-}
-
-input PriceInfoUpsertWithWhereUniqueWithoutItemInput {
-  where: PriceInfoWhereUniqueInput!
-  update: PriceInfoUpdateWithoutItemDataInput!
-  create: PriceInfoCreateWithoutItemInput!
-}
-
-input PriceInfoWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  price: Float
-  price_not: Float
-  price_in: [Float!]
-  price_not_in: [Float!]
-  price_lt: Float
-  price_lte: Float
-  price_gt: Float
-  price_gte: Float
-  store: String
-  store_not: String
-  store_in: [String!]
-  store_not_in: [String!]
-  store_lt: String
-  store_lte: String
-  store_gt: String
-  store_gte: String
-  store_contains: String
-  store_not_contains: String
-  store_starts_with: String
-  store_not_starts_with: String
-  store_ends_with: String
-  store_not_ends_with: String
-  item: ItemWhereInput
-  AND: [PriceInfoWhereInput!]
-  OR: [PriceInfoWhereInput!]
-  NOT: [PriceInfoWhereInput!]
-}
-
-input PriceInfoWhereUniqueInput {
-  id: ID
-}
-
 type Query {
   item(where: ItemWhereUniqueInput!): Item
   items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item]!
   itemsConnection(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ItemConnection!
-  priceInfo(where: PriceInfoWhereUniqueInput!): PriceInfo
-  priceInfoes(where: PriceInfoWhereInput, orderBy: PriceInfoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PriceInfo]!
-  priceInfoesConnection(where: PriceInfoWhereInput, orderBy: PriceInfoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PriceInfoConnection!
   shoppingList(where: ShoppingListWhereUniqueInput!): ShoppingList
   shoppingLists(where: ShoppingListWhereInput, orderBy: ShoppingListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ShoppingList]!
   shoppingListsConnection(where: ShoppingListWhereInput, orderBy: ShoppingListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ShoppingListConnection!
@@ -718,7 +485,6 @@ input ShoppingListWhereUniqueInput {
 
 type Subscription {
   item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
-  priceInfo(where: PriceInfoSubscriptionWhereInput): PriceInfoSubscriptionPayload
   shoppingList(where: ShoppingListSubscriptionWhereInput): ShoppingListSubscriptionPayload
 }
 `

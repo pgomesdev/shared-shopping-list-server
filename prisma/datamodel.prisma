@@ -12,13 +12,6 @@ type Item {
   updatedAt: DateTime!
   name: String!
   quantity: Float
-  priceInfo: [PriceInfo]
-  shoppingList: ShoppingList!
-}
-
-type PriceInfo {
-  id: ID! @unique
   price: Float
-  store: String
-  item: Item!
+  shoppingList: ShoppingList!
 }
